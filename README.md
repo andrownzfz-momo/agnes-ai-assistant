@@ -22,6 +22,50 @@
 - localStorage 持久化配置
 - 调用 Agnes AI API
 
+## 部署到 Cloudflare Pages
+
+### 方法一：控制台部署
+
+1. 打开 https://dash.cloudflare.com 登录
+2. 左侧选 **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
+3. 授权 GitHub 并选择 `agnes-ai-assistant` 仓库
+4. 配置：
+   - Framework preset: **None**
+   - Build command: 留空
+   - Build output directory: `/`
+5. 点击 **Save and Deploy**
+
+### 方法二：Wrangler CLI
+
+```bash
+npm i -g wrangler
+wrangler pages deploy . --project-name=agnes-ai-assistant --branch=main
+```
+
+### 方法三：GitHub Actions 自动部署
+
+在仓库中创建 `.github/workflows/deploy.yml`：
+
+```yaml
+name: Deploy to Cloudflare Pages
+on:
+  push:
+    branches: [master]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cloudflare/wrangler-action@3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy . --project-name=agnes-ai-assistant
+```
+
+部署完成后获得 `https://agnes-ai-assistant.pages.dev` 地址。
+
+---
+
 ## 部署到 Vercel
 
 ### 方法一：Vercel CLI
