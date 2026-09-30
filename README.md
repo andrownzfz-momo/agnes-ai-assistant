@@ -22,70 +22,29 @@
 - localStorage 持久化配置
 - 调用 Agnes AI API
 
-## 部署到 Cloudflare Pages
-
-### 方法一：控制台部署
-
-1. 打开 https://dash.cloudflare.com 登录
-2. 左侧选 **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
-3. 授权 GitHub 并选择 `agnes-ai-assistant` 仓库
-4. 配置：
-   - Framework preset: **None**
-   - Build command: 留空
-   - Build output directory: `/`
-5. 点击 **Save and Deploy**
-
-### 方法二：Wrangler CLI
-
-```bash
-npm i -g wrangler
-wrangler pages deploy . --project-name=agnes-ai-assistant --branch=main
-```
-
-### 方法三：GitHub Actions 自动部署
-
-在仓库中创建 `.github/workflows/deploy.yml`：
-
-```yaml
-name: Deploy to Cloudflare Pages
-on:
-  push:
-    branches: [master]
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: cloudflare/wrangler-action@3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: pages deploy . --project-name=agnes-ai-assistant
-```
-
-部署完成后获得 `https://agnes-ai-assistant.pages.dev` 地址。
-
----
-
 ## 部署到 Vercel
 
-### 方法一：Vercel CLI
+### 方法一：控制台部署（推荐）
+
+1. 打开 https://vercel.com 登录（可用 GitHub 账号）
+2. 点击 **Add New** → **Project**
+3. 选择 `agnes-ai-assistant` 仓库
+4. Framework preset 选 **Other**，直接点击 **Deploy**
+
+### 方法二：Vercel CLI
 
 ```bash
 npm i -g vercel
-vercel
-```
-
-### 方法二：Git 集成
-
-1. 将代码推送到 GitHub/GitLab 仓库
-2. 在 Vercel 控制台导入项目
-3. 框架选择 "Other"，直接部署
-
-### 方法三：直接部署
-
-```bash
 vercel --prod
 ```
+
+### 方法三：Git 集成自动部署
+
+1. 将代码推送到 GitHub 仓库
+2. 在 Vercel 控制台导入项目
+3. 之后每次 push 自动部署
+
+部署完成后获得 `https://agnes-ai-assistant.vercel.app` 地址。
 
 ## 配置
 
